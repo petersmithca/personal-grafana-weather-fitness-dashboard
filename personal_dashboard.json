@@ -1,0 +1,2504 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 30,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 4,
+            "panels": [],
+            "title": "Current Weather Conditions: Beford",
+            "type": "row"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 40,
+                    "min": -20,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#447ebc",
+                                "value": null
+                            },
+                            {
+                                "color": "#629e51",
+                                "value": 0
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": 22
+                            },
+                            {
+                                "color": "#e24d42",
+                                "value": 30
+                            }
+                        ]
+                    },
+                    "unit": "celsius"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 4,
+                "x": 0,
+                "y": 1
+            },
+            "id": 14,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^main_temp \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"main_temp\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "main_temp"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Temperature",
+            "type": "gauge"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 1,
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#629e51",
+                                "value": null
+                            },
+                            {
+                                "color": "#ef843c",
+                                "value": 25
+                            },
+                            {
+                                "color": "#e24d42",
+                                "value": 40
+                            }
+                        ]
+                    },
+                    "unit": "velocitykmh"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 4,
+                "x": 4,
+                "y": 1
+            },
+            "id": 16,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^kph$/",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "text": {}
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wind_speed\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "wind_speed"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Wind speed",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "kph",
+                        "binary": {
+                            "left": "wind_speed {host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api.openweathermap.org/data/2.5/weather?id=5897321&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"}",
+                            "operator": "*",
+                            "reducer": "sum",
+                            "right": "3.6"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true
+                    }
+                }
+            ],
+            "type": "gauge"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 348.75,
+                                "result": {
+                                    "index": 0,
+                                    "text": "N"
+                                },
+                                "to": 360
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 0,
+                                "result": {
+                                    "index": 1,
+                                    "text": "N"
+                                },
+                                "to": 11.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 11.25,
+                                "result": {
+                                    "index": 2,
+                                    "text": "NNE"
+                                },
+                                "to": 33.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 33.75,
+                                "result": {
+                                    "index": 3,
+                                    "text": "NE"
+                                },
+                                "to": 56.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 56.25,
+                                "result": {
+                                    "index": 4,
+                                    "text": "ENE"
+                                },
+                                "to": 78.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 78.75,
+                                "result": {
+                                    "index": 5,
+                                    "text": "E"
+                                },
+                                "to": 101.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 101.25,
+                                "result": {
+                                    "index": 6,
+                                    "text": "ESE"
+                                },
+                                "to": 123.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 123.75,
+                                "result": {
+                                    "index": 7,
+                                    "text": "SE"
+                                },
+                                "to": 146.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 146.25,
+                                "result": {
+                                    "index": 8,
+                                    "text": "SSE"
+                                },
+                                "to": 168.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 168.75,
+                                "result": {
+                                    "index": 9,
+                                    "text": "S"
+                                },
+                                "to": 191.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 191.25,
+                                "result": {
+                                    "index": 10,
+                                    "text": "SSW"
+                                },
+                                "to": 213.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 213.75,
+                                "result": {
+                                    "index": 11,
+                                    "text": "SW"
+                                },
+                                "to": 236.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 236.25,
+                                "result": {
+                                    "index": 12,
+                                    "text": "WSW"
+                                },
+                                "to": 258.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 258.75,
+                                "result": {
+                                    "index": 13,
+                                    "text": "W"
+                                },
+                                "to": 281.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 281.25,
+                                "result": {
+                                    "index": 14,
+                                    "text": "WNW"
+                                },
+                                "to": 303.75
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 303.75,
+                                "result": {
+                                    "index": 15,
+                                    "text": "NW"
+                                },
+                                "to": 326.25
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 326.25,
+                                "result": {
+                                    "index": 16,
+                                    "text": "NNW"
+                                },
+                                "to": 348.75
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "fahrenheit"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 8,
+                "y": 1
+            },
+            "id": 18,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^wind_deg \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "textMode": "value"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wind_deg\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "wind_deg"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Wind direction",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 0,
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#ef843c",
+                                "value": null
+                            },
+                            {
+                                "color": "#629e51",
+                                "value": 999.75
+                            },
+                            {
+                                "color": "#ef843c",
+                                "value": 1013.08
+                            }
+                        ]
+                    },
+                    "unit": "pressurehpa"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 12,
+                "y": 1
+            },
+            "id": 22,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^main_pressure \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"main_pressure\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "main_pressure"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Atmospheric pressure",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 4,
+                "x": 16,
+                "y": 1
+            },
+            "id": 26,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^weather_0_description \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"weather_0_description\")\n  |> yield(name: \"last\")\n",
+                    "refId": "A",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "weather_0_description"
+                                ],
+                                "type": "field"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Weather condition",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "dateTimeAsLocalNoDateIfToday"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 20,
+                "y": 1
+            },
+            "id": 28,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^timestamp$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sys_sunrise\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "sys_sunrise"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            },
+                            {
+                                "params": [
+                                    "*1000"
+                                ],
+                                "type": "math"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Sunrise time",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "timestamp",
+                        "binary": {
+                            "left": "sys_sunrise {host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api.openweathermap.org/data/2.5/weather?id=5897321&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"}",
+                            "operator": "*",
+                            "reducer": "sum",
+                            "right": "1000"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        }
+                    }
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "rgb(31, 120, 193)",
+                        "mode": "fixed"
+                    },
+                    "decimals": 0,
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 8,
+                "y": 4
+            },
+            "id": 20,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^clouds_all \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"clouds_all\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "clouds_all"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Cloudiness",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "rgb(31, 120, 193)",
+                        "mode": "fixed"
+                    },
+                    "decimals": 0,
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 12,
+                "y": 4
+            },
+            "id": 24,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "/^main_humidity \\{host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api\\.openweathermap.org/data/2.5/weather\\?id=5897321\\&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"\\}$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"main_humidity\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "main_humidity"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Humidity",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "dateTimeAsLocalNoDateIfToday"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 20,
+                "y": 4
+            },
+            "id": 30,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "colorMode": "none",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "/^timestamp$/",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "openweathermap",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"open_weather_map\" and r.name == \"Bedford\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sys_sunset\")\n  |> yield(name: \"last\")",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "sys_sunset"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            },
+                            {
+                                "params": [
+                                    "*1000"
+                                ],
+                                "type": "math"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "sys_country",
+                            "operator": "=~",
+                            "value": "/^$country$/"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "name",
+                            "operator": "=~",
+                            "value": "/^$city$/"
+                        }
+                    ]
+                }
+            ],
+            "title": "Sunset time",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "timestamp",
+                        "binary": {
+                            "left": "sys_sunset {host=\"grafana\", name=\"Bedford\", sys_country=\"CA\", url=\"https://api.openweathermap.org/data/2.5/weather?id=5897321&units=metric&appid=c39252d8308b5e6dae649f3ff4c707ec\"}",
+                            "operator": "*",
+                            "reducer": "sum",
+                            "right": "1000"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        }
+                    }
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "axisLabel": "Weight",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 12,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineStyle": {
+                            "fill": "solid"
+                        },
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "Weight",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "masslb"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "weight"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.axisLabel",
+                                "value": "Weight"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 7
+            },
+            "id": 2,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "query": "from(bucket: \"fitness\")\n  |> range(start: -30d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"weight\")\n  |> map(fn: (r) => ({r with _value: (float(v: r._value) * .00220462) } ))\n  |> group(columns: [\"_field\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Weight",
+            "transformations": [
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "number",
+                                "targetField": "weight"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "timeseries"
+        },
+        {
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "Weight",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 12,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineStyle": {
+                            "fill": "solid"
+                        },
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "Sleep TIme",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "weight"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.axisLabel",
+                                "value": "Weight"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 7
+            },
+            "id": 54,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "query": "from(bucket: \"fitness\")\n  |> range(start: -30d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sleepingSeconds\")\n  |> group(columns: [\"_field\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Sleep",
+            "transformations": [
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "number",
+                                "targetField": "sleepingSeconds"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 15
+            },
+            "id": 42,
+            "panels": [],
+            "title": "Fitness",
+            "type": "row"
+        },
+        {
+            "gridPos": {
+                "h": 2,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 46,
+            "options": {
+                "content": "# Monthly Summary",
+                "mode": "markdown"
+            },
+            "pluginVersion": "8.4.5",
+            "type": "text"
+        },
+        {
+            "datasource": "Strava",
+            "fieldConfig": {
+                "defaults": {
+                    "displayName": "Activities",
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "semi-dark-green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 18
+            },
+            "id": 40,
+            "links": [],
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "activityStat": "moving_time",
+                    "format": "time_series",
+                    "interval": "no",
+                    "queryType": "Activities",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": "1M",
+            "type": "stat"
+        },
+        {
+            "datasource": "Strava",
+            "fieldConfig": {
+                "defaults": {
+                    "decimals": 0,
+                    "displayName": "Distance",
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "blue",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "lengthm"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 6,
+                "y": 18
+            },
+            "id": 44,
+            "links": [],
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "activityStat": "distance",
+                    "queryType": "Activities",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": "1M",
+            "type": "stat"
+        },
+        {
+            "datasource": "Strava",
+            "fieldConfig": {
+                "defaults": {
+                    "decimals": 1,
+                    "displayName": "Time",
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "dark-blue",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "dthms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 12,
+                "y": 18
+            },
+            "id": 48,
+            "links": [],
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "activityStat": "moving_time",
+                    "queryType": "Activities",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": "1M",
+            "type": "stat"
+        },
+        {
+            "datasource": "Strava",
+            "fieldConfig": {
+                "defaults": {
+                    "displayName": "Elevation gain",
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null",
+                                "result": {
+                                    "text": "N/A"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "max": 10000,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "dark-red",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "lengthm"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 18,
+                "y": 18
+            },
+            "id": 50,
+            "links": [],
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "activityStat": "total_elevation_gain",
+                    "queryType": "Activities",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": "1M",
+            "type": "stat"
+        },
+        {
+            "datasource": "Strava",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "filterable": false
+                    },
+                    "decimals": 1,
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "moving time"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.displayMode",
+                                "value": "lcd-gauge"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "semi-dark-blue",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 1800
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 3600
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "max",
+                                "value": 14400
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "type"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 107
+                            },
+                            {
+                                "id": "custom.filterable",
+                                "value": true
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "kilojoules"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.displayMode",
+                                "value": "gradient-gauge"
+                            },
+                            {
+                                "id": "min",
+                                "value": 0
+                            },
+                            {
+                                "id": "max",
+                                "value": 3000
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 500
+                                        },
+                                        {
+                                            "color": "dark-red",
+                                            "value": 900
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 130
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "distance"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 94
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "elapsed time"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 109
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "heart rate"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 87
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "basic"
+                            },
+                            {
+                                "id": "min",
+                                "value": 120
+                            },
+                            {
+                                "id": "max",
+                                "value": 180
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "blue",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "yellow",
+                                            "value": 130
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 150
+                                        },
+                                        {
+                                            "color": "dark-red",
+                                            "value": 170
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "elevation gain"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 113
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "name"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "Go to activity",
+                                        "url": "d/StravaActivityOverview?var-Activity=${__data.fields.id}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 24,
+                "w": 12,
+                "x": 0,
+                "y": 22
+            },
+            "id": 52,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "activityStat": "distance",
+                    "extendedStats": [],
+                    "format": "table",
+                    "queryType": "Activities",
+                    "refId": "A"
+                }
+            ],
+            "title": "Activities",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {},
+                        "indexByName": {
+                            "distance": 3,
+                            "elapsed time": 5,
+                            "elevation gain": 7,
+                            "heart rate": 6,
+                            "id": 9,
+                            "kilojoules": 8,
+                            "moving time": 4,
+                            "name": 1,
+                            "time": 0,
+                            "type": 2
+                        },
+                        "renameByName": {}
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "filterable": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "lengthm"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "_time"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Date"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 22
+            },
+            "id": 32,
+            "options": {
+                "footer": {
+                    "fields": [],
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": true
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "query": "import \"date\"\n\nyear = date.year(t: now())\n\ncdate = \"${year}-01-01T00:00:00.000000000Z\"\n\nts = time(v: cdate)\n\ntype = from(bucket: \"fitness\")\n    |> range(start: ts)\n    |> filter(fn: (r) => r[\"_measurement\"] == \"activityType_typeKey\" and r._value == \"indoor_cycling\")\n    |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n\ndistance = from(bucket: \"fitness\")\n    |> range(start: ts)\n    |> filter(fn: (r) => r[\"_measurement\"] == \"distance\")\n    |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n\njoin(\n    tables: {activity:type, distance:distance},\n    on: [\"_time\"],\n)\n  |> keep(columns: [\"_time\", \"distance\"])\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "Indoor Biking",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "km",
+                        "binary": {
+                            "left": "distance",
+                            "operator": "*",
+                            "reducer": "sum",
+                            "right": "1"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "include": [
+                                "distance"
+                            ],
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "desc": true,
+                                "field": "_time"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "filterable": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "lengthm"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "_time"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Date"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 30
+            },
+            "id": 34,
+            "options": {
+                "footer": {
+                    "fields": [],
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": true
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "8.4.5",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "query": "import \"date\"\n\nyear = date.year(t: now())\n\ncdate = \"${year}-01-01T00:00:00.000000000Z\"\n\nts = time(v: cdate)\n\ntype = from(bucket: \"fitness\")\n    |> range(start: ts)\n    |> filter(fn: (r) => r[\"_measurement\"] == \"activityType_typeKey\" and r._value == \"road_biking\")\n    |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n\ndistance = from(bucket: \"fitness\")\n    |> range(start: ts)\n    |> filter(fn: (r) => r[\"_measurement\"] == \"distance\")\n    |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n\njoin(\n    tables: {activity:type, distance:distance},\n    on: [\"_time\"],\n)\n  |> keep(columns: [\"_time\", \"distance\"])\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "Road Biking",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "km",
+                        "binary": {
+                            "left": "distance",
+                            "operator": "*",
+                            "reducer": "sum",
+                            "right": "1"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "include": [
+                                "distance"
+                            ],
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "desc": true,
+                                "field": "_time"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisSoftMin": 0,
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "dailyStepGoal"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Step Goal"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "continuous-blues"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "totalSteps"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Actual Steps"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "continuous-YlRd"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 38
+            },
+            "id": 36,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "1jFtmi8nk"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"fitness\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"totalSteps\" or r[\"_measurement\"] == \"dailyStepGoal\")\n  |> group()\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  ",
+                    "refId": "C"
+                }
+            ],
+            "title": "Step Goal vs Actual",
+            "transformations": [
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "number",
+                                "targetField": "totalSteps"
+                            },
+                            {
+                                "destinationType": "number",
+                                "targetField": "dailyStepGoal"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "barchart"
+        }
+    ],
+    "refresh": "15m",
+    "schemaVersion": 35,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-30d",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Personal",
+    "uid": "Y66Ews87z",
+    "version": 36,
+    "weekStart": ""
+}
